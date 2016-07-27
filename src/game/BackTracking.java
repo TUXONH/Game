@@ -47,29 +47,28 @@ public class BackTracking {
     }
 
     //direction: 0 - left, 1 - up, 2 - right, 3 - down
-    public void littleBacktracking(int[] persona, int[] meta, int[][] maze, int direction, int[][] aptm)
+    public boolean littleBacktracking(int[] persona, int[] meta, int[][] maze, int direction, int[][] aptm)
     {
-
         if(persona[0] == meta[0] && persona[1] == meta[1])
         {
-            return;
+            return true;
         }
 
         if(persona[0] >= 0 && persona[0] < maze.length && persona[1] >= 0 && persona[1] < maze[persona[0]].length)
         {
             if(maze[persona[0]][persona[1]] == 0)
             {
-                return;
+                return false;
             }
         }
         else
         {
-            return;
+            return false;
         }
 
         if(aptm[persona[0]][persona[1]] == 1)
         {
-            return;
+            return false;
         }
 
         aptm[persona[0]][persona[1]] = 1;
@@ -84,7 +83,10 @@ public class BackTracking {
         {
             System.out.println("Izquierda");
             int new_persona[] = {persona[0] , persona[1] - 1};
-            littleBacktracking(new_persona, meta, maze, 0, aptm);
+            if(littleBacktracking(new_persona, meta, maze, 0, aptm))
+            {
+                return true;
+            }
         }
 
         //Arriba
@@ -92,7 +94,10 @@ public class BackTracking {
         {
             System.out.println("Arriba");
             int new_persona[] = {persona[0] - 1, persona[1]};
-            littleBacktracking(new_persona, meta, maze, 1, aptm);
+            if(littleBacktracking(new_persona, meta, maze, 1, aptm))
+            {
+                return true;
+            }
         }
 
         //Derecha
@@ -100,7 +105,10 @@ public class BackTracking {
         {        
             System.out.println("Derecha");
             int new_persona[] = {persona[0], persona[1] + 1};
-            littleBacktracking(new_persona, meta, maze, 2, aptm);
+            if(littleBacktracking(new_persona, meta, maze, 2, aptm))
+            {
+                return true;
+            }
         }
 
         //Abajo
@@ -108,10 +116,13 @@ public class BackTracking {
         {        
             System.out.println("Abajo");
             int new_persona[] = {persona[0] + 1, persona[1]};
-            littleBacktracking(new_persona, meta, maze, 3, aptm);
+            if(littleBacktracking(new_persona, meta, maze, 3, aptm))
+            {
+                return true;
+            }
         }
-        
-        return;        
+
+        return false;
     }
 
     public void imprimirMaze(int Maze[][], int persona[], int meta[])
