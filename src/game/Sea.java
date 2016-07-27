@@ -15,24 +15,35 @@ import javax.swing.ImageIcon;
  * @author Omar
  */
 public class Sea {
+    private final int ANIMATION_SEQUENCE = 4;
     private final String PATH = "src/images/";
 
     private Game game;
-    private Image image;
-     private List<Image> images = new ArrayList<>();
+    
+    private List<Image> images = new ArrayList<>();
+    private int _sequence = 0;
     private int x;
     private int y;
-
+    
     public Sea(Game game, int x, int y)
     {        
         this.game = game;
         this.x = x;
         this.y = y;
+        
+         
         ImageIcon image_icon = new ImageIcon(PATH + "lava.png");
-         image = image_icon.getImage();
-       
+        images.add(image_icon.getImage());
+        image_icon = new ImageIcon(PATH + "lava1.png");
+        images.add(image_icon.getImage());
+        image_icon = new ImageIcon(PATH + "lava2.png");
+        images.add(image_icon.getImage());
+        image_icon = new ImageIcon(PATH + "lava3.png");
+        images.add(image_icon.getImage());
         
        
+        
+        //image =image_icon.getImage();
     }
 
     public int getX()
@@ -57,17 +68,15 @@ public class Sea {
 */
     public void paint(Graphics2D g)
     {
-        /*if(insideCamera())
+        if(insideCamera())
         {
             _sequence++;
             _sequence = _sequence % ANIMATION_SEQUENCE;
-        */        
+
             int x_draw =  (x - game.camera_position[0]) * game.TILE_SIZE;
             int y_draw =  (y - game.camera_position[1]) * game.TILE_SIZE;
-            g.drawImage(image, x_draw , y_draw, game);
-        /*
-            g.drawString("Still alive biaaatch", 0, 60);
-        }*/
+            g.drawImage(images.get(_sequence), x_draw , y_draw, game);
+        }
     }
     
     private boolean insideCamera()
