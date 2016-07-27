@@ -35,7 +35,6 @@ public class Game extends JPanel {
     public int[] camera_position = {0, 0};
     Cursor cursor;
     public List<Unit> units = new ArrayList<>();
-    public List<Unit1> units1 = new ArrayList<>();
     public List<Field> fields = new ArrayList<>();
     public List<Sea> seas = new ArrayList<>();
 
