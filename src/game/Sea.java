@@ -19,19 +19,18 @@ public class Sea {
     private final String PATH = "src/images/";
 
     private Game game;
-    
+
     private List<Image> images = new ArrayList<>();
     private int _sequence = 0;
     private int x;
     private int y;
-    
+
     public Sea(Game game, int x, int y)
-    {        
+    {
         this.game = game;
         this.x = x;
         this.y = y;
-        
-         
+
         ImageIcon image_icon = new ImageIcon(PATH + "lava.png");
         images.add(image_icon.getImage());
         image_icon = new ImageIcon(PATH + "lava1.png");
@@ -40,10 +39,6 @@ public class Sea {
         images.add(image_icon.getImage());
         image_icon = new ImageIcon(PATH + "lava3.png");
         images.add(image_icon.getImage());
-        
-       
-        
-        //image =image_icon.getImage();
     }
 
     public int getX()
@@ -55,17 +50,7 @@ public class Sea {
     {
         return y;
     }
-    /*
-    public void setUnitInSea()
-    {
-    
-    }
-    
-    public Unit getUnitInSea()
-    {
-        return unit;
-    }
-*/
+
     public void paint(Graphics2D g)
     {
         if(insideCamera())
@@ -88,6 +73,5 @@ public class Sea {
             return true;
         }
         return false;
-    }
-    
+    }    
 }

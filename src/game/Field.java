@@ -23,7 +23,7 @@ public class Field
     private Unit unit = null;
 
     public Field(Game game, int x, int y)
-    {        
+    {
         this.game = game;
         this.x = x;
         this.y = y;
@@ -35,18 +35,18 @@ public class Field
     {
         return x;
     }
-    
+
     public int getY()
     {
         return y;
     }
-    
-    public void setUnitInFiel()
+
+    public void setUnitInField()
     {
-    
+
     }
     
-    public Unit getUnitInFiel()
+    public Unit getUnitInField()
     {
         return unit;
     }
@@ -55,19 +55,18 @@ public class Field
     {
         if(insideCamera())
         {
-        
             int x_draw =  (x - game.camera_position[0]) * game.TILE_SIZE;
             int y_draw =  (y - game.camera_position[1]) * game.TILE_SIZE;
-            
+
             g.drawImage(image, x_draw , y_draw, game);
         }
     }
-    
+
     private boolean insideCamera()
     {
         boolean inside_camera_range_x = x >= game.camera_position[0] && x < game.camera_position[0] + game.COLUMN_TILES;
         boolean inside_camera_range_y = y >= game.camera_position[1] && y < game.camera_position[1] + game.ROW_TILES;
-        if(inside_camera_range_x && inside_camera_range_y )
+        if(inside_camera_range_x && inside_camera_range_y)
         {
             return true;
         }

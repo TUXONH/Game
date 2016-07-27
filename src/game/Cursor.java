@@ -21,19 +21,15 @@ public class Cursor
     private Image image;
     private Game game;
     List<Unit> units;
-    //List<Unit1> units1;
     List<Field> fields;
     private int x;
     private int y;
     
     private Unit unit = null;
-    //private Unit1 unit1 = null;
-    
 
     public Cursor(Game game, List<Unit> units, List<Field> fields, int x, int y)
     {
         this.game = game;
-        //this.units1=units1;
         this.units = units;
         this.fields = fields;
         this.x = x;
@@ -44,7 +40,7 @@ public class Cursor
 
     public void move()
     {
-        //System.out.println(image.getWidth(game));
+
     }
 
     public void paint(Graphics2D g)
@@ -53,17 +49,11 @@ public class Cursor
         {
             g.drawString("Unidad Seleccionada", 0, 80);
         }
-        //if(unit1 != null)
-        //{
-        //    g.drawString("Unidad Seleccionada", 0, 80);
-        //}
         int x_draw =  x * game.TILE_SIZE;
         int y_draw =  y * game.TILE_SIZE;
         g.drawImage(image, x_draw , y_draw, game);
         g.drawString("x = " + game.camera_position[0] + ", y = " + game.camera_position[1], 0, 20);
     }
-
-
     
     public void keyTyped(KeyEvent e)
     {
@@ -85,7 +75,6 @@ public class Cursor
                     game.camera_position[0]--;
                 }
             }
-            //System.out.println("izquierda");
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
@@ -100,7 +89,6 @@ public class Cursor
                     game.camera_position[0]++;
                 }
             }
-            //System.out.println("derecha");
         }
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
@@ -115,7 +103,6 @@ public class Cursor
                     game.camera_position[1]--;
                 }
             }            
-            //System.out.println("arriba");
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN)
         {
@@ -130,7 +117,6 @@ public class Cursor
                     game.camera_position[1]++;
                 }
             }
-            //System.out.println("abajo");
         }
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
         {
@@ -146,9 +132,6 @@ public class Cursor
                         unit = u;
                     }
                 }
-                //System.out.println("x = " + x + ", posicion de camara: " + game.camera_position[0]);
-                //System.out.println("y = " + y + ", posicion de camara: " + game.camera_position[1]);
-                //System.out.println("Posicion en el mapa: x = " + (x_in_map) + ", y = " + (y_in_map));
             }
             else
             {
@@ -173,45 +156,6 @@ public class Cursor
                     }
                 }
             }
-            
-            /*
-            if(unit1 == null)
-            {
-                for(Unit1 u : units1)
-                {
-                    if(x_in_map == u.getX() && y_in_map == u.getY())
-                    {
-                        unit1 = u;
-                    }
-                }
-                System.out.println("x = " + x + ", posicion de camara: " + game.camera_position[0]);
-                System.out.println("y = " + y + ", posicion de camara: " + game.camera_position[1]);
-                System.out.println("Posicion en el mapa: x = " + (x_in_map) + ", y = " + (y_in_map));
-            }
-            else
-            {
-                if(x_in_map == unit1.getX() && y_in_map == unit1.getY())
-                {
-                    unit1 = null;
-                }
-                else
-                {
-                    boolean flag = false;
-                    for(Field field: game.fields)
-                    {
-                        if(field.getX() == x_in_map && field.getY() == y_in_map)
-                        {
-                            flag = true;
-                        }
-                    }
-                    if(flag)
-                    {
-                        unit1.move(x_in_map, y_in_map);
-                        unit1 = null;
-                    }
-                }
-            }
-            */
         }
     }
 }

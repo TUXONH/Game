@@ -39,8 +39,6 @@ public class Unit
             images.add(image_icon.getImage());
             image_icon = new ImageIcon(PATH + "guerrero1_2.png");
             images.add(image_icon.getImage());
-            //image_icon = new ImageIcon(PATH + "guerrero3.png");
-            //images.add(image_icon.getImage());
         }
         else if(soldier_type == 1)
         {
@@ -48,8 +46,6 @@ public class Unit
             images.add(image_icon.getImage());
             image_icon = new ImageIcon(PATH + "guerrero2_2.png");
             images.add(image_icon.getImage());
-            //image_icon = new ImageIcon(PATH + "guerrero3.png");
-            //images.add(image_icon.getImage());
         }
          else if(soldier_type == 2)
         {
@@ -57,16 +53,7 @@ public class Unit
             images.add(image_icon.getImage());
             image_icon = new ImageIcon(PATH + "guerrero3_2.png");
             images.add(image_icon.getImage());
-            //image_icon = new ImageIcon(PATH + "guerrero3.png");
-            //images.add(image_icon.getImage());
         }
-        //image_icon = new ImageIcon(PATH + "unit4.png");
-        //images.add(image_icon.getImage());
-        
-        //ImageIcon image_icon=new ImageIcon(PATH + "guerrero3.png");
-        //images.add(image_icon.getImage());
-        //image_icon = new ImageIcon(PATH + "gerrero2.png");
-        //images.add(image_icon.getImage());
     }
     
 
