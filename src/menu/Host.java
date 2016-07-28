@@ -5,6 +5,8 @@
  */
 package menu;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 /**
@@ -16,6 +18,8 @@ public class Host extends javax.swing.JFrame {
     /**
      * Creates new form Host
      */
+     private final String path2 = "/wav/";
+    private Clip clip;
     public Host() {
         initComponents();
     }
@@ -49,6 +53,11 @@ public class Host extends javax.swing.JFrame {
                 jButton1MouseEntered(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/connect-buttom.png"))); // NOI18N
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -57,6 +66,11 @@ public class Host extends javax.swing.JFrame {
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButton2MouseEntered(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -110,6 +124,8 @@ public class Host extends javax.swing.JFrame {
           ImageIcon face = new ImageIcon(getClass().getResource("/images/host-buttom2.png"));
         //Añadimos la imagen al boton
         jButton1.setIcon(face);
+        daleplay("beep");
+        
     }//GEN-LAST:event_jButton1MouseEntered
 
     private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
@@ -117,6 +133,7 @@ public class Host extends javax.swing.JFrame {
           ImageIcon face = new ImageIcon(getClass().getResource("/images/host-buttom.png"));
         //Añadimos la imagen al boton
         jButton1.setIcon(face);
+        
     }//GEN-LAST:event_jButton1MouseExited
 
     private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
@@ -124,6 +141,7 @@ public class Host extends javax.swing.JFrame {
         ImageIcon face = new ImageIcon(getClass().getResource("/images/connect2-buttom.png"));
         //Añadimos la imagen al boton
         jButton2.setIcon(face);
+        daleplay("beep");
     }//GEN-LAST:event_jButton2MouseEntered
 
     private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
@@ -133,6 +151,33 @@ public class Host extends javax.swing.JFrame {
         jButton2.setIcon(face);
     }//GEN-LAST:event_jButton2MouseExited
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Servidor ser = new Servidor();
+        ser.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Client cli = new Client();
+        cli.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+public void daleplay(String value)
+    {        
+       try
+       {
+	  clip=AudioSystem.getClip();
+          System.out.println(path2 + value + ".wav");
+          System.out.println(System.getProperty("user.dir"));
+	  clip.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream(path2 + value + ".wav" )));
+          clip.start();
+
+       }catch(Exception ex){
+ 	  //System.err.println( ex.getMessage() );
+        }
+    }
     /**
      * @param args the command line arguments
      */

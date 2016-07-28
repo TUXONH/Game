@@ -6,6 +6,8 @@
 package menu;
 
 import java.awt.Image;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,7 +20,9 @@ public class menuPrincipal extends javax.swing.JFrame {
      * Creates new form menuPrincipal
      */
     private final String PATH = "src/images/";
-     private Image image;
+    private Image image;
+    private final String path2 = "/wav/";
+    private Clip clip;
     public menuPrincipal() {
         initComponents();
 //           ImageIcon face = new ImageIcon(getClass().getResource(PATH+"TalesOfKnight.png"));
@@ -59,6 +63,11 @@ public class menuPrincipal extends javax.swing.JFrame {
                 jButton1MouseEntered(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/credits-buttom2.png"))); // NOI18N
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -67,6 +76,11 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButton2MouseEntered(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -117,6 +131,7 @@ public class menuPrincipal extends javax.swing.JFrame {
          ImageIcon face = new ImageIcon(getClass().getResource("/images/play-buttom2.png"));
         //Añadimos la imagen al boton
         jButton1.setIcon(face);
+       
     }//GEN-LAST:event_jButton1MouseExited
 
     private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
@@ -125,6 +140,7 @@ public class menuPrincipal extends javax.swing.JFrame {
          ImageIcon face = new ImageIcon(getClass().getResource("/images/play-buttom.png"));
         //Añadimos la imagen al boton
         jButton1.setIcon(face);
+         daleplay("beep");
     }//GEN-LAST:event_jButton1MouseEntered
 
     private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
@@ -132,6 +148,7 @@ public class menuPrincipal extends javax.swing.JFrame {
          ImageIcon face = new ImageIcon(getClass().getResource("/images/credits-buttom.png"));
         //Añadimos la imagen al boton
         jButton2.setIcon(face);
+         daleplay("beep");
     }//GEN-LAST:event_jButton2MouseEntered
 
     private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
@@ -139,8 +156,33 @@ public class menuPrincipal extends javax.swing.JFrame {
         ImageIcon face = new ImageIcon(getClass().getResource("/images/credits-buttom2.png"));
         //Añadimos la imagen al boton
         jButton2.setIcon(face);
+        
     }//GEN-LAST:event_jButton2MouseExited
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Host host = new Host();
+        host.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+public void daleplay(String value)
+    {        
+       try
+       {
+	  clip=AudioSystem.getClip();
+          System.out.println(path2 + value + ".wav");
+          System.out.println(System.getProperty("user.dir"));
+	  clip.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream(path2 + value + ".wav" )));
+          clip.start();
+
+       }catch(Exception ex){
+ 	  //System.err.println( ex.getMessage() );
+        }
+    }
     /**
      * @param args the command line arguments
      */
