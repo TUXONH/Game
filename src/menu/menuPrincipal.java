@@ -5,6 +5,9 @@
  */
 package menu;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author josegonzalez
@@ -14,8 +17,17 @@ public class menuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form menuPrincipal
      */
+    private final String PATH = "src/images/";
+     private Image image;
     public menuPrincipal() {
         initComponents();
+//           ImageIcon face = new ImageIcon(getClass().getResource(PATH+"TalesOfKnight.png"));
+//        //Añadimos la imagen al boton
+//        jButton1.setIcon(face);
+//        
+        //Label1.setIcon(new javax.swing.ImageIcon(getClass().getResource("src/images/TalesOfKnight.png")));
+         //jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("src/images/credits-buttom2.png")));
+          //jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("src/images/credits-buttom2.png")));
     }
 
     /**
@@ -38,9 +50,25 @@ public class menuPrincipal extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/TalesOfKnight.png"))); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/credits-buttom2.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play-buttom2.png"))); // NOI18N
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton1MouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1MouseEntered(evt);
+            }
+        });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play-buttom2.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/credits-buttom2.png"))); // NOI18N
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton2MouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton2MouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -60,12 +88,12 @@ public class menuPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(0, 51, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -83,6 +111,35 @@ public class menuPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+        // TODO add your handling code here:
+         ImageIcon face = new ImageIcon(getClass().getResource("/images/play-buttom2.png"));
+        //Añadimos la imagen al boton
+        jButton1.setIcon(face);
+    }//GEN-LAST:event_jButton1MouseExited
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        // TODO add your handling code here:
+         // TODO add your handling code here:
+         ImageIcon face = new ImageIcon(getClass().getResource("/images/play-buttom.png"));
+        //Añadimos la imagen al boton
+        jButton1.setIcon(face);
+    }//GEN-LAST:event_jButton1MouseEntered
+
+    private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
+        // TODO add your handling code here:
+         ImageIcon face = new ImageIcon(getClass().getResource("/images/credits-buttom.png"));
+        //Añadimos la imagen al boton
+        jButton2.setIcon(face);
+    }//GEN-LAST:event_jButton2MouseEntered
+
+    private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
+        // TODO add your handling code here:
+        ImageIcon face = new ImageIcon(getClass().getResource("/images/credits-buttom2.png"));
+        //Añadimos la imagen al boton
+        jButton2.setIcon(face);
+    }//GEN-LAST:event_jButton2MouseExited
 
     /**
      * @param args the command line arguments
