@@ -38,7 +38,7 @@ public class Cursor
         this.y = y;
         ImageIcon image_icon = new ImageIcon(PATH + "cursor.png");
         image = image_icon.getImage();
-        image_icon = new ImageIcon(PATH + "cursor2.png");
+        image_icon = new ImageIcon(PATH + "Seleccion.png");
         image2 = image_icon.getImage();
     }
 
@@ -169,10 +169,13 @@ public class Cursor
                     }
                     if(flag)
                     {
-                        unit.move(x_in_map, y_in_map);
-                        unit = null;
-
-                        possible_new_positions = new ArrayList<>();
+                        int[] aux = {x_in_map, y_in_map};
+                        if(!checkIfUnitInPosition(aux))
+                        {
+                            unit.move(x_in_map, y_in_map);
+                            unit = null;
+                            possible_new_positions = new ArrayList<>();
+                        }
                     }
                 }
             }
@@ -197,22 +200,13 @@ public class Cursor
         else
         {
             return;
-        }                
-
-        for(Unit u: game.units)
-        {
-            if(u.getX() == cursor[0] && u.getY() == cursor[1])
-            {
-                if(u != unit)
-                {
-                    if(u.getId_Team() != game.turn)
-                    {
-                        return;
-                    }
-                }
-            }
         }
         
+        if(checkIfEnemyInPosition(cursor))
+        {
+            return;
+        }
+
         boolean flag = true;
         for(Integer[] possible_new_position : possible_new_positions)
         {
@@ -264,6 +258,41 @@ public class Cursor
 
         return;
     }
+    
+    private boolean checkIfEnemyInPosition(int[] position)
+    {
+        for(Unit u: game.units)
+        {
+            if(u.getX() == position[0] && u.getY() == position[1])
+            {
+                if(u != unit)
+                {
+                    if(unit.getId_Team() != u.getId_Team())
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean checkIfUnitInPosition(int[] position)
+    {
+        for(Unit u: game.units)
+        {
+            if(u.getX() == position[0] && u.getY() == position[1])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     
     private boolean insideCamera(int x, int y)
     {
