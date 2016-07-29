@@ -50,6 +50,9 @@ public class Field
     {
         return unit;
     }
+    
+    
+    
 
     public void paint(Graphics2D g)
     {
