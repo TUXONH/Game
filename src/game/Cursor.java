@@ -38,7 +38,7 @@ public class Cursor
         this.y = y;
         ImageIcon image_icon = new ImageIcon(PATH + "cursor.png");
         image = image_icon.getImage();
-        image_icon = new ImageIcon(PATH + "cursor2.png");
+        image_icon = new ImageIcon(PATH + "Seleccion.png");
         image2 = image_icon.getImage();
     }
 
