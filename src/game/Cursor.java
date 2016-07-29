@@ -197,16 +197,8 @@ public class Cursor
         else
         {
             return;
-        }
-        
-        for(Integer[] possible_new_position : possible_new_positions)
-        {
-            if(possible_new_position[0] == cursor[0] && possible_new_position[1] == cursor[1])
-            {
-                return;
-            }
-        }
-        
+        }                
+
         for(Unit u: game.units)
         {
             if(u.getX() == cursor[0] && u.getY() == cursor[1])
@@ -221,12 +213,23 @@ public class Cursor
             }
         }
         
-        if(direction != -1)
+        boolean flag = true;
+        for(Integer[] possible_new_position : possible_new_positions)
         {
-            Integer[] aux = {cursor[0], cursor[1]};        
-            possible_new_positions.add(aux);
+            if(possible_new_position[0] == cursor[0] && possible_new_position[1] == cursor[1])
+            {
+                flag = false;
+            }
         }
-        
+        if(flag)
+        {
+            if(unit.getX() != cursor[0] || unit.getY() != cursor[1])
+            {
+                Integer[] aux = {cursor[0], cursor[1]};        
+                possible_new_positions.add(aux);
+            }
+        }
+
         //Izquierda
         if(direction != 2)
         {
