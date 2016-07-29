@@ -169,10 +169,13 @@ public class Cursor
                     }
                     if(flag)
                     {
-                        unit.move(x_in_map, y_in_map);
-                        unit = null;
-
-                        possible_new_positions = new ArrayList<>();
+                        int[] aux = {x_in_map, y_in_map};
+                        if(!checkIfUnitInPosition(aux))
+                        {
+                            unit.move(x_in_map, y_in_map);
+                            unit = null;
+                            possible_new_positions = new ArrayList<>();
+                        }
                     }
                 }
             }
@@ -199,34 +202,28 @@ public class Cursor
             return;
         }
         
+        if(checkIfEnemyInPosition(cursor))
+        {
+            return;
+        }
+
+        boolean flag = true;
         for(Integer[] possible_new_position : possible_new_positions)
         {
             if(possible_new_position[0] == cursor[0] && possible_new_position[1] == cursor[1])
             {
-                return;
+                flag = false;
             }
         }
-        
-        for(Unit u: game.units)
+        if(flag)
         {
-            if(u.getX() == cursor[0] && u.getY() == cursor[1])
+            if(unit.getX() != cursor[0] || unit.getY() != cursor[1])
             {
-                if(u != unit)
-                {
-                    if(u.getId_Team() != game.turn)
-                    {
-                        return;
-                    }
-                }
+                Integer[] aux = {cursor[0], cursor[1]};        
+                possible_new_positions.add(aux);
             }
         }
-        
-        if(direction != -1)
-        {
-            Integer[] aux = {cursor[0], cursor[1]};        
-            possible_new_positions.add(aux);
-        }
-        
+
         //Izquierda
         if(direction != 2)
         {
@@ -261,6 +258,41 @@ public class Cursor
 
         return;
     }
+    
+    private boolean checkIfEnemyInPosition(int[] position)
+    {
+        for(Unit u: game.units)
+        {
+            if(u.getX() == position[0] && u.getY() == position[1])
+            {
+                if(u != unit)
+                {
+                    if(unit.getId_Team() != u.getId_Team())
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean checkIfUnitInPosition(int[] position)
+    {
+        for(Unit u: game.units)
+        {
+            if(u.getX() == position[0] && u.getY() == position[1])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     
     private boolean insideCamera(int x, int y)
     {
