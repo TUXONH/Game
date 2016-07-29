@@ -14,12 +14,13 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
+ *d
  * @author poseidon9
  */
 public class Game extends JPanel {
@@ -37,15 +38,19 @@ public class Game extends JPanel {
     public List<Unit> units = new ArrayList<>();
     public List<Field> fields = new ArrayList<>();
     public List<Sea> seas = new ArrayList<>();
+    public int turn = 0;
 
     public Game() {
         this.setPreferredSize(new Dimension(720, 720));
 
+        units.add(new Unit(this,3,3,2,0));
+        units.add(new Unit(this,4,3,2,1));
         units.add(new Unit(this, 4, 4, 0, 0));
-        units.add(new Unit(this, 4, 5, 1, 1));
-        units.add(new Unit(this,4,3,2,2));
+        units.add(new Unit(this, 4, 5, 1, 0));
+
 
         ////////////////////////////////////////////////////////////////////////
+        /*
         int[][] map = {
             {0, 0}, {1, 0}, {2, 0}, 
             {0, 1}, {1, 1}, {2, 1},
@@ -64,6 +69,29 @@ public class Game extends JPanel {
             {3, 14}, {4, 14}, {5, 14}, {6, 14}, {7, 14}, {8, 14}, {9, 14}, {10, 14},
             {7, 15}, {8, 15}, {9, 15}, {10, 15}            
         };
+        createMap(map);
+        */
+        ////////////////////////////////////////////////////////////////////////////
+        int[][] map = {
+            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0}
+        };
+        createMap(map);
+
         /*
         {
         "map":
@@ -90,8 +118,58 @@ public class Game extends JPanel {
                 ]
         }
         */
+        
+        
+        ////////////////////////////////////////////////////////////////////////
 
-        int map_iterator = 0;
+        cursor = new Cursor(this, map, 0, 0);
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                cursor.keyPressed(e);
+            }
+        });
+        setFocusable(true);
+        
+        
+        //paint(fields, units, cursor);
+
+        //littleBacktracking(units, cursor, fields, -1, already_passed_through_maze);
+    }   
+    
+    public void createMap(int[][] map)
+    {
+        //ROW
+        for(int i = 0; i < MAP_SIZE[1]; i++)
+        {
+            //COLUMN
+            for(int j = 0; j < MAP_SIZE[0]; j++)
+            {
+                if(map[i][j] == 1)
+                {
+                    fields.add(new Field(this, j, i));
+                }
+                else
+                {
+                    seas.add(new Sea(this, j, i));
+                }
+            }
+        }
+    }
+    
+    //Old method
+    /*
+    public void createMap(int[][] map)
+    {
+                int map_iterator = 0;
         //ROW
         for(int i = 0; i < MAP_SIZE[1]; i++)
         {
@@ -117,25 +195,8 @@ public class Game extends JPanel {
                 }
             }
         }
-        ////////////////////////////////////////////////////////////////////////
-
-        cursor = new Cursor(this, units, fields, 0, 0);
-        addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                cursor.keyPressed(e);
-            }
-        });
-        setFocusable(true);
     }
+    */
 
     @Override
     public void paint(Graphics g) {

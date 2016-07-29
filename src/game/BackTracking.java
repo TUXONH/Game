@@ -65,6 +65,13 @@ public class BackTracking {
         {
             return false;
         }
+        
+        /*
+        if(distancia >= 3)
+        {
+            return false;
+        }
+        */
 
         if(aptm[persona[0]][persona[1]] == 1)
         {
@@ -113,7 +120,7 @@ public class BackTracking {
 
         //Abajo
         if(direction != 1)
-        {        
+        {
             System.out.println("Abajo");
             int new_persona[] = {persona[0] + 1, persona[1]};
             if(littleBacktracking(new_persona, meta, maze, 3, aptm))
