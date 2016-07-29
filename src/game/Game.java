@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -169,14 +170,19 @@ public class Game extends JPanel {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         JFrame frame = new JFrame("Advance Wars Remake");
-        Game game = new Game();
-        frame.getContentPane().add(game);
-        frame.pack();
+        //Game game = new Game();
+        //frame.getContentPane().add(game);
+        //game.setLocation(420, 30);
+        //frame.pack();
+        //frame.setSize(1330, 760);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        JTextArea area = new JTextArea();
+        area.setSize(400, 200);
+        area.setLocation(20, 30);
+        frame.add(area);
         while (true) {
-            game.repaint();
+            //game.repaint();
             Thread.sleep(100);
         }
     }
