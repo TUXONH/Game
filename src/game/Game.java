@@ -14,10 +14,13 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import multiplayer.Client;
+import multiplayer.Server;
 
 /**
  *d
@@ -31,18 +34,30 @@ public class Game extends JPanel {
     //temporary
     public final int[] MAP_SIZE = {12, 16};
 
-    public int player_turn = 0;
+    public int turn = 0;
     
     public int[] camera_position = {0, 0};
-    Cursor cursor;
+    public Cursor cursor;
     public List<Unit> units = new ArrayList<>();
     public List<Field> fields = new ArrayList<>();
     public List<Sea> seas = new ArrayList<>();
-    public int turn = 0;
+    public int team;
 
     public Game() {
         this.setPreferredSize(new Dimension(720, 720));
 
+        try {
+            Server server = new Server(9000, 2);
+            server.start();
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+        Client client = new Client(this, "192.168.0.111", 9000);
+        client.start();
+        
+        System.out.println("Connectadation");
+        
         units.add(new Unit(this,3,3,2,0));
         units.add(new Unit(this,4,3,2,1));
         units.add(new Unit(this, 4, 4, 0, 0));

@@ -76,105 +76,107 @@ public class Cursor
 
     public void keyPressed(KeyEvent e)
     {
-        System.out.println(e.getKeyCode());
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
+        if(game.turn == game.team)
         {
-            if(x > 0)
+            if (e.getKeyCode() == KeyEvent.VK_LEFT)
             {
-                x--;
-            }
-            else
-            {
-                if(game.camera_position[0] > 0)
+                if(x > 0)
                 {
-                    game.camera_position[0]--;
-                }
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-        {
-            if(x < game.COLUMN_TILES - 1) // son n columnas, pero se cuenta desde el cero asi que quitamos la "n-sima"
-            {
-                x++;
-            }
-            else
-            {
-                if(game.camera_position[0] < game.MAP_SIZE[0] - game.ROW_TILES)
-                {
-                    game.camera_position[0]++;
-                }
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP)
-        {
-            if(y > 0)
-            {
-                y--;
-            }
-            else
-            {                
-                if(game.camera_position[1] > 0)
-                {
-                    game.camera_position[1]--;
-                }
-            }            
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
-            if(y < game.ROW_TILES - 1) // son n filas, pero se cuenta desde el cero asi que quitamos la "n-sima"
-            {
-                y++;
-            }
-            else
-            {
-                if(game.camera_position[1] < game.MAP_SIZE[1] - game.COLUMN_TILES)
-                {
-                    game.camera_position[1]++;
-                }
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-            int x_in_map = x + game.camera_position[0];
-            int y_in_map = y + game.camera_position[1];
-            
-            if(unit == null)
-            {
-                for(Unit u : game.units)
-                {
-                    if(x_in_map == u.getX() && y_in_map == u.getY())
-                    {
-                        unit = u;
-                        int[] aux = {x_in_map, y_in_map};
-                        littleBacktracking(aux, -1, 0);
-                    }
-                }
-            }
-            else
-            {
-                if(x_in_map == unit.getX() && y_in_map == unit.getY())
-                {
-                    unit = null;
-                    possible_new_positions = new ArrayList<>();
+                    x--;
                 }
                 else
                 {
-                    boolean flag = false;
-                    for(Integer[] possible_new_position : possible_new_positions)
+                    if(game.camera_position[0] > 0)
                     {
-                        if(x_in_map == possible_new_position[0] && y_in_map == possible_new_position[1])
+                        game.camera_position[0]--;
+                    }
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+            {
+                if(x < game.COLUMN_TILES - 1) // son n columnas, pero se cuenta desde el cero asi que quitamos la "n-sima"
+                {
+                    x++;
+                }
+                else
+                {
+                    if(game.camera_position[0] < game.MAP_SIZE[0] - game.ROW_TILES)
+                    {
+                        game.camera_position[0]++;
+                    }
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_UP)
+            {
+                if(y > 0)
+                {
+                    y--;
+                }
+                else
+                {                
+                    if(game.camera_position[1] > 0)
+                    {
+                        game.camera_position[1]--;
+                    }
+                }            
+            }
+            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                if(y < game.ROW_TILES - 1) // son n filas, pero se cuenta desde el cero asi que quitamos la "n-sima"
+                {
+                    y++;
+                }
+                else
+                {
+                    if(game.camera_position[1] < game.MAP_SIZE[1] - game.COLUMN_TILES)
+                    {
+                        game.camera_position[1]++;
+                    }
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                int x_in_map = x + game.camera_position[0];
+                int y_in_map = y + game.camera_position[1];
+
+                if(unit == null)
+                {
+                    for(Unit u : game.units)
+                    {
+                        if(x_in_map == u.getX() && y_in_map == u.getY())
                         {
-                            flag = true;
+                            unit = u;
+                            int[] aux = {x_in_map, y_in_map};
+                            littleBacktracking(aux, -1, 0);
                         }
                     }
-                    if(flag)
+                }
+                else
+                {
+                    if(x_in_map == unit.getX() && y_in_map == unit.getY())
                     {
-                        int[] aux = {x_in_map, y_in_map};
-                        if(!checkIfUnitInPosition(aux))
+                        unit = null;
+                        possible_new_positions = new ArrayList<>();
+                    }
+                    else
+                    {
+                        boolean flag = false;
+                        for(Integer[] possible_new_position : possible_new_positions)
                         {
-                            unit.move(x_in_map, y_in_map);
-                            unit = null;
-                            possible_new_positions = new ArrayList<>();
+                            if(x_in_map == possible_new_position[0] && y_in_map == possible_new_position[1])
+                            {
+                                flag = true;
+                            }
+                        }
+                        if(flag)
+                        {
+                            int[] aux = {x_in_map, y_in_map};
+                            if(!checkIfUnitInPosition(aux))
+                            {
+                                unit.move(x_in_map, y_in_map);
+                                unit = null;
+                                possible_new_positions = new ArrayList<>();
+                            }
                         }
                     }
                 }
@@ -303,6 +305,26 @@ public class Cursor
             return true;
         }
         return false;
+    }
+    
+    public int getX()
+    {
+        return x;
+    }
+    
+    public int getY()
+    {
+        return y;
+    }
+    
+    public void setX(int new_x)
+    {
+        x = new_x;
+    }
+    
+    public void setY(int new_y)
+    {
+        y = new_y;
     }
     
     
