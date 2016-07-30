@@ -5,7 +5,10 @@
  */
 package game;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,11 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Scanner;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import multiplayer.Client;
 import multiplayer.Server;
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
 
 /**
  *d
@@ -44,7 +53,7 @@ public class Game extends JPanel {
     public int team;
 
     public Game() {
-        this.setPreferredSize(new Dimension(720, 720));
+        this.setPreferredSize(new Dimension(881, 661));
 
         try {
             Server server = new Server(9000, 2);
@@ -242,15 +251,16 @@ public class Game extends JPanel {
         JOptionPane.showMessageDialog(this, "Game Over", "Game Over", JOptionPane.YES_NO_OPTION);
         System.exit(ABORT);
     }
-
     public static void main(String[] args) throws InterruptedException, IOException {
         JFrame frame = new JFrame("Advance Wars Remake");
+      
         Game game = new Game();
-        frame.getContentPane().add(game);
+        frame.setPreferredSize(new Dimension(1330, 760));
         frame.pack();
+        frame.add(game);
+        game.setLocation(0, 0);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         while (true) {
             game.repaint();
             Thread.sleep(100);
