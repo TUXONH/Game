@@ -35,7 +35,8 @@ import javax.swing.JTextArea;
  *d
  * @author poseidon9
  */
-public class Game extends JPanel {
+public class Game extends JPanel
+{
     public final int TILE_SIZE = 80;
     public final int COLUMN_TILES = 9;
     public final int ROW_TILES = 9;
@@ -48,21 +49,28 @@ public class Game extends JPanel {
     public int[] camera_position = {0, 0};
     public Cursor cursor;
     public List<Unit> units = new ArrayList<>();
+    public List<Unit> my_units = new ArrayList<>();
     public List<Field> fields = new ArrayList<>();
     public List<Sea> seas = new ArrayList<>();
     public int team;
 
-    public Game() {
+    Client client;
+    
+    public Game()
+    {
         this.setPreferredSize(new Dimension(881, 661));
 
-        try {
+        try
+        {
             Server server = new Server(9000, 2);
             server.start();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
-        Client client = new Client(this, "192.168.0.111", 9000);
+        client = new Client(this, "192.168.0.8", 9000);
         client.start();
         
         System.out.println("Connectadation");
@@ -75,7 +83,8 @@ public class Game extends JPanel {
 
         ////////////////////////////////////////////////////////////////////////
         /*
-        int[][] map = {
+        int[][] map =
+        {
             {0, 0}, {1, 0}, {2, 0}, 
             {0, 1}, {1, 1}, {2, 1},
             {2, 2}, {3, 2},
@@ -96,7 +105,8 @@ public class Game extends JPanel {
         createMap(map);
         */
         ////////////////////////////////////////////////////////////////////////////
-        int[][] map = {
+        int[][] map =
+        {
             {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -147,18 +157,29 @@ public class Game extends JPanel {
         ////////////////////////////////////////////////////////////////////////
 
         cursor = new Cursor(this, map, 0, 0);
-        addKeyListener(new KeyListener() {
+        addKeyListener(new KeyListener()
+        {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyTyped(KeyEvent e)
+            {
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased(KeyEvent e)
+            {
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
-                cursor.keyPressed(e);
+            public void keyPressed(KeyEvent e)
+            {
+                try
+                {
+                    cursor.keyPressed(e);
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         setFocusable(true);
@@ -169,7 +190,8 @@ public class Game extends JPanel {
         //littleBacktracking(units, cursor, fields, -1, already_passed_through_maze);
     }   
     
-    public void createMap(int[][] map)
+    
+    private void createMap(int[][] map)
     {
         //ROW
         for(int i = 0; i < MAP_SIZE[1]; i++)
@@ -187,6 +209,45 @@ public class Game extends JPanel {
                 }
             }
         }
+    }
+    
+    private void getMyUnits()
+    {
+        for(Unit unit: units)
+        {
+            if(unit.getIdTeam() == team)
+            {
+                my_units.add(unit);
+            }
+        }
+    }
+    
+    public void activateMyUnits()
+    {
+        for(Unit unit: my_units)
+        {
+            unit.setActive(true);
+        }
+    }
+    
+    //Change name
+    public boolean checkAtleastOneActiveMyUnit()
+    {
+        boolean aux = false;
+        for(Unit unit: my_units)
+        {
+            if(unit.getActive())
+            {
+                aux = true;
+            }
+        }
+        return aux;
+    }
+    
+    public boolean checkAtleastOneAliveMyUnit()
+    {
+        boolean aux = my_units.size() > 0;
+        return aux;
     }
     
     //Old method
@@ -222,8 +283,10 @@ public class Game extends JPanel {
     }
     */
 
+    
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -247,11 +310,16 @@ public class Game extends JPanel {
         cursor.paint(g2d);
     }
 
-    public void gameOver() {
+    
+    private void gameOver()
+    {
         JOptionPane.showMessageDialog(this, "Game Over", "Game Over", JOptionPane.YES_NO_OPTION);
         System.exit(ABORT);
     }
-    public static void main(String[] args) throws InterruptedException, IOException {
+    
+    
+    public static void main(String[] args) throws InterruptedException, IOException
+    {
         JFrame frame = new JFrame("Advance Wars Remake");
       
         Game game = new Game();
@@ -261,7 +329,8 @@ public class Game extends JPanel {
         game.setLocation(0, 0);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        while (true) {
+        while (true)
+        {
             game.repaint();
             Thread.sleep(100);
         }

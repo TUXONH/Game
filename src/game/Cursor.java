@@ -7,6 +7,7 @@ package game;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,17 +19,26 @@ import javax.swing.ImageIcon;
  */
 public class Cursor
 {
+    //TEMPORARY, will change later
+    private final int MOVING = 0;
+    private final int ATTACKING = 1;
+    
     private final String PATH = "src/images/";
 
     private Image image;
+    private Image image2;
+    private Image image3;
     private Game game;
     private int[][] map;
     private int x;
     private int y;
     private List<Integer[]> possible_new_positions = new ArrayList<>();
-    private Image image2;
+    private List<Integer[]> possible_attack_positions = new ArrayList<>();
+
     
     private Unit unit = null;
+    private int unit_index = -1;
+    private int moving_or_attacking;
 
     public Cursor(Game game, int[][] map, int x, int y)
     {
@@ -36,10 +46,16 @@ public class Cursor
         this.map = map;
         this.x = x;
         this.y = y;
+        moving_or_attacking = MOVING;
+        
         ImageIcon image_icon = new ImageIcon(PATH + "cursor.png");
         image = image_icon.getImage();
         image_icon = new ImageIcon(PATH + "Seleccion.png");
         image2 = image_icon.getImage();
+        
+        //Cambiar imagen
+        image_icon = new ImageIcon(PATH + "Seleccion.png");
+        image3 = image_icon.getImage();
     }
 
     public void move()
@@ -60,13 +76,23 @@ public class Cursor
         
         for(Integer[] possible_new_position : possible_new_positions)
         {
-            //if(insideCamera(possible_new_position[0], possible_new_position[1]))
-            //{
+            if(insideCamera(possible_new_position[0], possible_new_position[1]))
+            {
                 int x_draw2 = (possible_new_position[0] - game.camera_position[0]) * game.TILE_SIZE;
                 int y_draw2 = (possible_new_position[1] - game.camera_position[1]) * game.TILE_SIZE;
 
                 g.drawImage(image2, x_draw2 , y_draw2, game);
-            //}
+            }
+        }
+        for(Integer[] possible_attack_position : possible_attack_positions)
+        {
+            if(insideCamera(possible_attack_position[0], possible_attack_position[1]))
+            {
+                int x_draw3 = (possible_attack_position[0] - game.camera_position[0]) * game.TILE_SIZE;
+                int y_draw3 = (possible_attack_position[1] - game.camera_position[1]) * game.TILE_SIZE;
+
+                g.drawImage(image3, x_draw3 , y_draw3, game);
+            }
         }
     }
 
@@ -74,7 +100,7 @@ public class Cursor
     {
     }
 
-    public void keyPressed(KeyEvent e)
+    public void keyPressed(KeyEvent e) throws IOException
     {
         if(game.turn == game.team)
         {
@@ -91,6 +117,7 @@ public class Cursor
                         game.camera_position[0]--;
                     }
                 }
+                game.client.sendCameraPosition();
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
@@ -105,6 +132,7 @@ public class Cursor
                         game.camera_position[0]++;
                     }
                 }
+                game.client.sendCameraPosition();
             }
             if (e.getKeyCode() == KeyEvent.VK_UP)
             {
@@ -118,7 +146,8 @@ public class Cursor
                     {
                         game.camera_position[1]--;
                     }
-                }            
+                }
+                game.client.sendCameraPosition();
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
@@ -133,59 +162,119 @@ public class Cursor
                         game.camera_position[1]++;
                     }
                 }
+                game.client.sendCameraPosition();
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER)
             {
                 int x_in_map = x + game.camera_position[0];
                 int y_in_map = y + game.camera_position[1];
 
-                if(unit == null)
+                if(moving_or_attacking == MOVING)
                 {
-                    for(Unit u : game.units)
+                    if(unit == null)
                     {
-                        if(x_in_map == u.getX() && y_in_map == u.getY())
+                        int iterator = 0;
+                        for(Unit u : game.units)
                         {
-                            unit = u;
-                            int[] aux = {x_in_map, y_in_map};
-                            littleBacktracking(aux, -1, 0);
+                            if(x_in_map == u.getX() && y_in_map == u.getY() && u.getIdTeam() == game.team && u.getActive())
+                            {
+                                unit = u;
+                                unit_index = iterator;
+                                int[] aux = {x_in_map, y_in_map};
+                                littleBacktracking(aux, -1, 0);
+                                break;
+                            }
+                            iterator++;
                         }
-                    }
-                }
-                else
-                {
-                    if(x_in_map == unit.getX() && y_in_map == unit.getY())
-                    {
-                        unit = null;
-                        possible_new_positions = new ArrayList<>();
                     }
                     else
                     {
-                        boolean flag = false;
-                        for(Integer[] possible_new_position : possible_new_positions)
+                        if(x_in_map == unit.getX() && y_in_map == unit.getY())
                         {
-                            if(x_in_map == possible_new_position[0] && y_in_map == possible_new_position[1])
-                            {
-                                flag = true;
-                            }
+                            unit = null;
+                            unit_index = -1;
+                            possible_new_positions = new ArrayList<>();
                         }
-                        if(flag)
+                        else
                         {
-                            int[] aux = {x_in_map, y_in_map};
-                            if(!checkIfUnitInPosition(aux))
+                            boolean flag = false;
+                            for(Integer[] possible_new_position : possible_new_positions)
                             {
-                                unit.move(x_in_map, y_in_map);
-                                unit = null;
-                                possible_new_positions = new ArrayList<>();
+                                if(x_in_map == possible_new_position[0] && y_in_map == possible_new_position[1])
+                                {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if(flag)
+                            {
+                                int[] aux = {x_in_map, y_in_map};
+                                if(!checkIfUnitInPosition(aux))
+                                {
+                                    unit.move(x_in_map, y_in_map);
+                                    game.client.sendMoveUnit(unit.getPosition(), unit_index);                                    
+                                    possible_new_positions = new ArrayList<>();
+                                    moving_or_attacking = ATTACKING;
+                                    setAttackRange(3);
+                                }
                             }
                         }
                     }
+                }
+                else if(moving_or_attacking == ATTACKING)
+                {
+                    if(x_in_map == unit.getX() && y_in_map == unit.getY())
+                    {
+                        unit.setActive(false);
+                        unit = null;
+                        unit_index = -1;
+                        possible_attack_positions = new ArrayList<>();
+                        moving_or_attacking = MOVING;
+                        if(!game.checkAtleastOneActiveMyUnit())
+                        {
+                            game.client.sendNextTurn(game.turn);
+                        }
+                    }
+                    
+                    boolean flag = false;
+                    for(Integer[] possible_attack_position : possible_attack_positions)
+                    {
+                        if(x_in_map == possible_attack_position[0] && y_in_map == possible_attack_position[1])
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(flag)
+                    {
+                        int iterator2 = 0;
+                        for(Unit u : game.units)
+                        {
+                            if(x_in_map == u.getX() && y_in_map == u.getY() && u.getIdTeam() != game.team)
+                            {
+                                unitAttack(unit, u, iterator2);
+                                unit.setActive(false);
+                                unit = null;
+                                unit_index = -1;
+                                possible_attack_positions = new ArrayList<>();
+                                moving_or_attacking = MOVING;
+                                if(!game.checkAtleastOneActiveMyUnit())
+                                {
+                                    game.client.sendNextTurn(game.turn);
+                                }
+                                break;                                
+                            }
+                            iterator2++;
+                        }
+                    }
+                    
                 }
             }
         }
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void littleBacktracking(int[] cursor, int direction, int distance)
+    private void littleBacktracking(int[] cursor, int direction, int distance)
     {
         if(distance > 3)
         {
@@ -269,7 +358,7 @@ public class Cursor
             {
                 if(u != unit)
                 {
-                    if(unit.getId_Team() != u.getId_Team())
+                    if(unit.getIdTeam() != u.getIdTeam())
                     {
                         return true;
                     }
@@ -306,12 +395,12 @@ public class Cursor
         }
         return false;
     }
-    
+
     public int getX()
     {
         return x;
     }
-    
+
     public int getY()
     {
         return y;
@@ -325,6 +414,77 @@ public class Cursor
     public void setY(int new_y)
     {
         y = new_y;
+    }
+    
+    private void setAttackRange(int range)
+    {        
+        for(int i = -range; i <= range; i++)
+        {
+            for(int j = -range; j <= range; j++)
+            {
+                int aux = Math.abs(i) + Math.abs(j);
+                if(aux != 0 && aux <= range)
+                {
+                    Integer[] aux2 = {unit.getX() + i, unit.getY() + j};        
+                    possible_attack_positions.add(aux2);
+                }
+            }
+        }
+        
+    }
+    
+    private void unitAttack(Unit attacking_unit, Unit defending_unit, int defending_unit_index) throws IOException
+    {
+        if(attacking_unit.getSoldierType() == 0)
+        {
+            if(attacking_unit.getSoldierType() == 0)
+            {
+                defending_unit.receiveDamage(4);
+            }
+            else if(attacking_unit.getSoldierType() == 1)
+            {
+                defending_unit.receiveDamage(2);
+            }
+            else if(attacking_unit.getSoldierType() == 2)
+            {
+                defending_unit.receiveDamage(6);
+            }
+        }
+        else if(attacking_unit.getSoldierType() == 1)
+        {
+            if(attacking_unit.getSoldierType() == 0)
+            {
+                defending_unit.receiveDamage(6);
+            }
+            else if(attacking_unit.getSoldierType() == 1)
+            {
+                defending_unit.receiveDamage(4);
+            }
+            else if(attacking_unit.getSoldierType() == 2)
+            {
+                defending_unit.receiveDamage(2);
+            }
+        }
+        else if(attacking_unit.getSoldierType() == 2)
+        {
+            if(attacking_unit.getSoldierType() == 0)
+            {
+                defending_unit.receiveDamage(2);
+            }
+            else if(attacking_unit.getSoldierType() == 1)
+            {
+                defending_unit.receiveDamage(6);
+            }
+            else if(attacking_unit.getSoldierType() == 2)
+            {
+                defending_unit.receiveDamage(4);
+            }
+        }
+        if(defending_unit.checkIfDead())
+        {
+            game.units.remove(defending_unit_index);
+            game.client.sendKillUnit(defending_unit_index); 
+        }
     }
     
     

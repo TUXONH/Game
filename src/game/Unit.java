@@ -25,14 +25,22 @@ public class Unit
     private int _sequence = 0;
     private int x;
     private int y;
+    private int health;
+    private boolean active;
+
     private int id_team;
+    private int soldier_type;
     
     public Unit(Game game, int x, int y, int soldier_type, int id_team)
     {
         this.game = game;
         this.x = x;
         this.y = y;
+        health = 10;
+        active = true;
+
         this.id_team = id_team;
+        this.soldier_type = soldier_type;
         if(soldier_type == 0)
         {
             ImageIcon image_icon = new ImageIcon(PATH + "guerrero1_1.png");
@@ -66,16 +74,53 @@ public class Unit
     {
         return y;
     }
-
-    public int getId_Team()
+    
+    public int[] getPosition()
+    {
+        int[] current_position = {getX(), getY()};
+        return current_position;
+    }
+    
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    public int getIdTeam()
     {
         return id_team;
+    }
+    
+    public int getSoldierType()
+    {
+        return soldier_type;
+    }
+    
+    public boolean getActive()
+    {
+        return active;
+    }
+    
+    public void setActive(boolean active)
+    {
+        this.active = active;
     }
 
     public void move(int x, int y)
     {
         this.x = x;
         this.y = y;
+    }
+    
+    public void receiveDamage(int damage)
+    {
+        health -= damage;       
+    }
+    
+    public boolean checkIfDead()
+    {
+        boolean flag = health < 0;
+        return flag;
     }
 
     public void paint(Graphics2D g)
