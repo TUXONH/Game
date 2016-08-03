@@ -232,7 +232,9 @@ public class Cursor
                         moving_or_attacking = MOVING;
                         if(!game.checkAtleastOneActiveMyUnit())
                         {
+                            game.turn = -1;
                             game.client.sendNextTurn(game.turn);
+                            game.activateMyUnits();
                         }
                     }
                     
@@ -260,9 +262,11 @@ public class Cursor
                                 moving_or_attacking = MOVING;
                                 if(!game.checkAtleastOneActiveMyUnit())
                                 {
+                                    game.turn = -1;
                                     game.client.sendNextTurn(game.turn);
+                                    game.activateMyUnits();
                                 }
-                                break;                                
+                                break;              
                             }
                             iterator2++;
                         }

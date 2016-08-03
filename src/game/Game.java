@@ -67,10 +67,10 @@ public class Game extends JPanel
         }
         catch (IOException ex)
         {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("oc");
         }
                 
-        client = new Client(this, "192.168.0.8", 9000);
+        client = new Client(this, "172.16.2.61", 9000);
         client.start();
         
         System.out.println("Connectadation");
@@ -79,6 +79,8 @@ public class Game extends JPanel
         units.add(new Unit(this,4,3,2,1));
         units.add(new Unit(this, 4, 4, 0, 0));
         units.add(new Unit(this, 4, 5, 1, 0));
+        
+        getMyUnits();
 
 
         ////////////////////////////////////////////////////////////////////////
@@ -116,7 +118,7 @@ public class Game extends JPanel
             {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
             {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0},
             {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
             {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
             {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
@@ -244,9 +246,10 @@ public class Game extends JPanel
         return aux;
     }
     
+    
     public boolean checkAtleastOneAliveMyUnit()
     {
-        boolean aux = my_units.size() > 0;
+        boolean aux = !my_units.isEmpty();
         return aux;
     }
     

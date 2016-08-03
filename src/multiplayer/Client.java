@@ -56,7 +56,6 @@ public class Client extends Thread
         try {
             System.out.println("waiting for other players...");
             dIn.readInt();
-            Thread.sleep(5000);
             while(true)
             {
                 System.out.println("waiting for messages...");
@@ -85,7 +84,7 @@ public class Client extends Thread
                     
                 }
             }
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -174,10 +173,15 @@ public class Client extends Thread
         System.out.println("Consiguiendo Datos, Next Turn");
         int turn = dIn.readInt();
         game.turn = turn;
+        System.out.println(game.team + " wtf " + game.checkAtleastOneAliveMyUnit());
+        System.out.println(game.my_units);
         if(game.turn == game.team)
         {
+            System.out.println(game.team + " wtf " + game.checkAtleastOneAliveMyUnit());
+            System.out.println(game.my_units);
             if(!game.checkAtleastOneAliveMyUnit())
             {
+                game.turn = -1;
                 sendNextTurn(turn);
             }
         }
