@@ -5,37 +5,15 @@
  */
 package game;
 
-import java.awt.BorderLayout;
-import multiplayer.ClienteChat;
-
 /**
  *
  * @author Mauricio
  */
 public class GUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GUI
-     */
+    
     public GUI() {
         initComponents();
-        final Game game = new Game();
-        game.setSize(893,671);
-        game.setLocation(3,3);
-        juego.add(game,BorderLayout.CENTER);
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                while(true){
-                    game.repaint();
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException ex) {
-                    }
-                }
-            }
-        };
-        thread.start();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,6 +47,12 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -101,8 +85,12 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        area.setEditable(false);
         area.setColumns(20);
+        area.setLineWrap(true);
         area.setRows(5);
+        area.setWrapStyleWord(true);
+        area.setEnabled(false);
         jScrollPane1.setViewportView(area);
 
         mandar.setText("Send");
@@ -210,7 +198,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 404, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(juego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -235,9 +223,11 @@ public class GUI extends javax.swing.JFrame {
 
     private void mandarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mandarActionPerformed
         // TODO add your handling code here:
-               ClienteChat chat = new ClienteChat(area, mensaje, mandar);
-       chat.recibirMensajesServidor();
     }//GEN-LAST:event_mandarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,7 +255,6 @@ public class GUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -274,7 +263,6 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea area;
     private javax.swing.JButton jButton1;

@@ -5,10 +5,7 @@
  */
 package game;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -19,17 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Scanner;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import multiplayer.A_Chat_Client;
 
 import multiplayer.Client;
 import multiplayer.Server;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
 
 /**
  *d
@@ -40,6 +36,11 @@ public class Game extends JPanel
     public final int TILE_SIZE = 80;
     public final int COLUMN_TILES = 9;
     public final int ROW_TILES = 9;
+    public static String UserName = "Anonymous";
+    public static JTextField TF_Message = new JTextField(20);
+    private static A_Chat_Client ChatClient;
+    public static JTextArea TA_CONVERSATION = new JTextArea();
+    public static JList JL_ONLINE = new JList();
     
     //temporary
     public final int[] MAP_SIZE = {12, 16};
@@ -70,7 +71,7 @@ public class Game extends JPanel
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
-        client = new Client(this, "192.168.0.8", 9000);
+        client = new Client(this, "localhost", 9000);
         client.start();
         
         System.out.println("Connectadation");
@@ -182,11 +183,8 @@ public class Game extends JPanel
                 }
             }
         });
-        setFocusable(true);
-        
-        
+        setFocusable(true); 
         //paint(fields, units, cursor);
-
         //littleBacktracking(units, cursor, fields, -1, already_passed_through_maze);
     }   
     
@@ -321,12 +319,15 @@ public class Game extends JPanel
     public static void main(String[] args) throws InterruptedException, IOException
     {
         JFrame frame = new JFrame("Advance Wars Remake");
-      
+        JPanel chat = new JPanel();
         Game game = new Game();
         frame.setPreferredSize(new Dimension(1330, 760));
         frame.pack();
         frame.add(game);
+        chat.add(TA_CONVERSATION);
+        frame.add(chat);
         game.setLocation(0, 0);
+        
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         while (true)
