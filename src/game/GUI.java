@@ -5,6 +5,8 @@
  */
 package game;
 
+import java.awt.BorderLayout;
+
 /**
  *
  * @author Mauricio
@@ -14,6 +16,23 @@ public class GUI extends javax.swing.JFrame {
     
     public GUI() {
         initComponents();
+        final Game game = new Game(0,0);
+        game.setSize(893,671);
+        game.setLocation(3,3);
+        juego.add(game,BorderLayout.CENTER);
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                while(true){
+                    game.repaint();
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                    }
+                }
+            }
+        };
+        thread.start();
     }
     /**
      * This method is called from within the constructor to initialize the form.
