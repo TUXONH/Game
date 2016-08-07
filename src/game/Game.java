@@ -47,19 +47,25 @@ public class Game extends JPanel
     public int turn = 0;
     
     public int[] camera_position = {0, 0};
-    public Cursor cursor;
+    public CursorGame cursor;
     public List<Unit> units = new ArrayList<>();
     public List<Unit> my_units = new ArrayList<>();
     public List<Field> fields = new ArrayList<>();
-    public List<Sea> seas = new ArrayList<>();
     public int team;
+    
+    int map_index;
+    String type_map;
+    int players_index;
+    public List<int [][]> map_list = new ArrayList<>();
+    public List<int [][]> map_list2 = new ArrayList<>();
 
     Client client;
     
-    public Game()
+    public Game(int index,int players)
     {
+        map_index = index;
+        players_index=players;
         this.setPreferredSize(new Dimension(881, 661));
-
         try
         {
             Server server = new Server(9000, 2);
@@ -70,16 +76,164 @@ public class Game extends JPanel
             System.out.println("oc");
         }
                 
-        client = new Client(this, "172.16.2.61", 9000);
+        client = new Client(this, "192.168.43.141", 9000);
         client.start();
         
         System.out.println("Connectadation");
         
-        units.add(new Unit(this,3,3,2,0));
-        units.add(new Unit(this,4,3,2,1));
-        units.add(new Unit(this, 4, 4, 0, 0));
-        units.add(new Unit(this, 4, 5, 1, 0));
+        //units.add(new Unit(this,3,3,2,0));
+        //units.add(new Unit(this,4,3,2,1));
+        //units.add(new Unit(this, 4, 4, 0, 0));
+        //units.add(new Unit(this, 4, 5, 1, 0));
         
+        if(players_index==1)
+       {
+         if(map_index==0){  
+            //////////////1 PLAYERS//////////////////////
+            units.add(new Unit(this,6,0,1,0));
+            units.add(new Unit(this,7,0,1,0));
+            units.add(new Unit(this, 8, 0, 1, 0));
+            units.add(new Unit(this, 6, 1, 1, 0));
+            units.add(new Unit(this, 7, 1, 1, 0));
+            units.add(new Unit(this, 8, 1, 1, 0));
+            //////////////2 PLAYERS//////////////////////
+             units.add(new Unit(this,0,6,0,1));
+            units.add(new Unit(this,0,7,0,1));
+            units.add(new Unit(this, 0, 8, 0, 1));
+            units.add(new Unit(this, 1, 6, 0, 1));
+            units.add(new Unit(this, 1, 7, 0, 1));
+            units.add(new Unit(this, 1, 8, 0, 1));
+            //////////////3 PLAYERS//////////////////////
+             units.add(new Unit(this,15,6,2,2));
+            units.add(new Unit(this,15,7,2,2));
+            units.add(new Unit(this, 15, 8, 2, 2));
+            units.add(new Unit(this, 14, 6, 2, 2));
+            units.add(new Unit(this, 14, 7, 2, 2));
+            units.add(new Unit(this, 14, 8, 2, 2));
+            //////////////4 PLAYERS//////////////////////
+             units.add(new Unit(this,6,15,3,3));
+            units.add(new Unit(this,7,15,3,3));
+            units.add(new Unit(this,  8,15, 3, 3));
+            units.add(new Unit(this, 6, 14, 3, 3));
+            units.add(new Unit(this, 7, 14, 3, 3));
+            units.add(new Unit(this, 8, 14, 3, 3));
+         }
+         else if(map_index==1){  
+            //////////////1 PLAYERS//////////////////////
+            units.add(new Unit(this,0,0,1,0));
+            units.add(new Unit(this,1,0,1,0));
+            units.add(new Unit(this, 2, 0, 1, 0));
+            units.add(new Unit(this, 0, 1, 1, 0));
+            units.add(new Unit(this, 1, 1, 1, 0));
+            units.add(new Unit(this, 2, 1, 1, 0));
+            //////////////2 PLAYERS//////////////////////
+             units.add(new Unit(this,13,0,0,1));
+            units.add(new Unit(this,14,0,0,1));
+            units.add(new Unit(this, 15, 0, 0, 1));
+            units.add(new Unit(this, 13, 1, 0, 1));
+            units.add(new Unit(this, 14, 1, 0, 1));
+            units.add(new Unit(this, 15, 1, 0, 1));
+            //////////////3 PLAYERS//////////////////////
+             units.add(new Unit(this,13,15,2,2));
+            units.add(new Unit(this,14,15,2,2));
+            units.add(new Unit(this, 15, 15, 2, 2));
+            units.add(new Unit(this, 13, 14, 2, 2));
+            units.add(new Unit(this, 14, 14, 2, 2));
+            units.add(new Unit(this, 15, 14, 2, 2));
+            //////////////4 PLAYERS//////////////////////
+             units.add(new Unit(this,0,14,3,3));
+            units.add(new Unit(this,1,14,3,3));
+            units.add(new Unit(this,  2,14, 3, 3));
+            units.add(new Unit(this, 0, 15, 3, 3));
+            units.add(new Unit(this, 1, 15, 3, 3));
+            units.add(new Unit(this, 2, 15, 3, 3));
+         }
+          else if(map_index==2){  
+            //////////////1 PLAYERS//////////////////////
+            units.add(new Unit(this,0,0,1,0));
+            units.add(new Unit(this,1,0,1,0));
+            units.add(new Unit(this, 2, 0, 1, 0));
+            units.add(new Unit(this, 0, 1, 1, 0));
+            units.add(new Unit(this, 1, 1, 1, 0));
+            units.add(new Unit(this, 2, 1, 1, 0));
+            //////////////2 PLAYERS//////////////////////
+             units.add(new Unit(this,13,0,0,1));
+            units.add(new Unit(this,14,0,0,1));
+            units.add(new Unit(this, 15, 0, 0, 1));
+            units.add(new Unit(this, 13, 1, 0, 1));
+            units.add(new Unit(this, 14, 1, 0, 1));
+            units.add(new Unit(this, 15, 1, 0, 1));
+            //////////////3 PLAYERS//////////////////////
+             units.add(new Unit(this,13,15,2,2));
+            units.add(new Unit(this,14,15,2,2));
+            units.add(new Unit(this, 15, 15, 2, 2));
+            units.add(new Unit(this, 13, 14, 2, 2));
+            units.add(new Unit(this, 14, 14, 2, 2));
+            units.add(new Unit(this, 15, 14, 2, 2));
+            //////////////4 PLAYERS//////////////////////
+             units.add(new Unit(this,0,14,3,3));
+            units.add(new Unit(this,1,14,3,3));
+            units.add(new Unit(this,  2,14, 3, 3));
+            units.add(new Unit(this, 0, 15, 3, 3));
+            units.add(new Unit(this, 1, 15, 3, 3));
+            units.add(new Unit(this, 2, 15, 3, 3));
+         }
+       }
+       else if(players_index==0)
+       {
+           if(map_index==0)
+           {
+               //////////////1 PLAYERS//////////////////////
+               units.add(new Unit(this,0,0,1,0));
+               units.add(new Unit(this,1,0,1,0));
+               units.add(new Unit(this, 2, 0, 1, 0));
+               units.add(new Unit(this, 0, 1, 1, 0));
+               units.add(new Unit(this, 1, 1, 1, 0));
+               units.add(new Unit(this, 2, 1, 1, 0));
+               //////////////2 PLAYERS//////////////////////
+               units.add(new Unit(this,10,15,3,1));
+               units.add(new Unit(this,9,15,3,1));
+               units.add(new Unit(this,  8,15, 3, 1));
+               units.add(new Unit(this, 10, 14, 3, 1));
+               units.add(new Unit(this, 9, 14, 3, 1));
+               units.add(new Unit(this, 8, 14, 3, 1));
+           }
+          else if(map_index==1)
+          {
+             //////////////1 PLAYERS//////////////////////
+            units.add(new Unit(this,0,7,0,0));
+            units.add(new Unit(this,1,7,1,0));
+            units.add(new Unit(this, 2, 7, 2, 0));
+            units.add(new Unit(this, 0, 8, 0, 0));
+            units.add(new Unit(this, 1, 8, 1, 0));
+            units.add(new Unit(this, 2, 8, 2, 0));
+            //////////////2 PLAYERS//////////////////////
+            units.add(new Unit(this,11,7,0,1));
+            units.add(new Unit(this,10,7,1,1));
+            units.add(new Unit(this,  9,7, 2, 1));
+            units.add(new Unit(this, 11, 8, 0, 1));
+            units.add(new Unit(this, 10, 8, 1, 1));
+            units.add(new Unit(this, 9, 8, 2, 1));
+           }
+            else if(map_index==2)
+          {
+             //////////////1 PLAYERS//////////////////////
+            units.add(new Unit(this,4,0,1,0));
+            units.add(new Unit(this,5,0,1,0));
+            units.add(new Unit(this, 6, 0, 1, 0));
+            units.add(new Unit(this, 7, 0, 1, 0));
+            units.add(new Unit(this, 5, 1, 1, 0));
+            units.add(new Unit(this, 6, 1, 1, 0));
+            //////////////2 PLAYERS//////////////////////
+            units.add(new Unit(this,4,15,3,1));
+            units.add(new Unit(this,5,15,3,1));
+            units.add(new Unit(this,  6,15, 3, 1));
+            units.add(new Unit(this, 7, 15, 3, 1));
+            units.add(new Unit(this, 5, 14, 3, 1));
+            units.add(new Unit(this, 6, 14, 3, 1));
+           }
+       }
+        ////////////////////////////////////////////////////////////////////////        
         getMyUnits();
 
 
@@ -107,6 +261,9 @@ public class Game extends JPanel
         createMap(map);
         */
         ////////////////////////////////////////////////////////////////////////////
+        
+        /*
+        //OLD
         int[][] map =
         {
             {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -127,7 +284,72 @@ public class Game extends JPanel
             {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0}
         };
         createMap(map);
-
+        */
+        
+        //NEW
+        ////////////////////////////////////////////////////////////////////////////
+        int[][] map = {
+            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0}
+               };
+         int[][] map2 = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0},
+            {0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0},
+            {1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1},
+            {1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            {1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1},
+            {0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0},
+            {0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+          int[][] map3 = {
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0},
+            {0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0},
+            {0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0},
+            {0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0}
+        };
+          
+        map_list.add(map);
+        map_list.add(map2);
+        map_list.add(map3);
+        
+       
+        createMap(map_list.get(map_index));
+                
         /*
         {
         "map":
@@ -158,7 +380,7 @@ public class Game extends JPanel
         
         ////////////////////////////////////////////////////////////////////////
 
-        cursor = new Cursor(this, map, 0, 0);
+        cursor = new CursorGame(this, map_list.get(map_index), 0, 0);
         addKeyListener(new KeyListener()
         {
             @Override
@@ -190,9 +412,9 @@ public class Game extends JPanel
         //paint(fields, units, cursor);
 
         //littleBacktracking(units, cursor, fields, -1, already_passed_through_maze);
-    }   
-    
-    
+    }
+     
+
     private void createMap(int[][] map)
     {
         //ROW
@@ -203,18 +425,19 @@ public class Game extends JPanel
             {
                 if(map[i][j] == 1)
                 {
-                    fields.add(new Field(this, j, i));
+                    fields.add(new Field(this, j, i, true, 0));
                 }
                 else
                 {
-                    seas.add(new Sea(this, j, i));
+                    fields.add(new Field(this, j, i, false, 0));
                 }
             }
         }
     }
     
-    private void getMyUnits()
+    public void getMyUnits()
     {
+        my_units = new ArrayList<>();
         for(Unit unit: units)
         {
             if(unit.getIdTeam() == team)
@@ -295,11 +518,6 @@ public class Game extends JPanel
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
 
-        for(Sea sea: seas)
-        {
-            sea.paint(g2d);
-        }
-
         for(Field field : fields)
         {
             field.paint(g2d);
@@ -320,7 +538,41 @@ public class Game extends JPanel
         System.exit(ABORT);
     }
     
+    public static void CreateJframe(int index,int players) throws InterruptedException
+    {
+        JFrame frame = new JFrame("Advance Wars Remake");
+      
+        final Game game = new Game(index,players);
+        frame.setPreferredSize(new Dimension(1330, 760));
+        frame.pack();
+        frame.add(game);
+        game.setLocation(0, 0);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Thread thread = new Thread() 
+        {
+            @Override
+            public void run() 
+            {
+                while(true)
+                {
+                    game.repaint();
+                   
+                    try 
+                    {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                          System.out.println("FUCK YOU");
+                    }
+                }
+            }
+        };
+        thread.start();
+       
+    }
     
+    //OLD
+    /*
     public static void main(String[] args) throws InterruptedException, IOException
     {
         JFrame frame = new JFrame("Advance Wars Remake");
@@ -338,4 +590,5 @@ public class Game extends JPanel
             Thread.sleep(100);
         }
     }
+    */
 }

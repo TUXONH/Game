@@ -19,7 +19,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
-        final Game game = new Game();
+        final Game game = new Game(0,0);
         game.setSize(893,671);
         game.setLocation(3,3);
         juego.add(game,BorderLayout.CENTER);

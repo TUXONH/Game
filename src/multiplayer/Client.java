@@ -157,6 +157,7 @@ public class Client extends Thread
         System.out.println("Consiguiendo Datos, Kill Unit");
         int unit_index = dIn.readInt();
         game.units.remove(unit_index);
+        game.getMyUnits();
     }
     
     
