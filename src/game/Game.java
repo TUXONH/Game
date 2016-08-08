@@ -22,9 +22,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import multiplayer.A_Chat_Client;
+
 
 import multiplayer.Client;
+import multiplayer.ClienteChat;
 import multiplayer.Server;
 
 /**
@@ -36,11 +37,6 @@ public class Game extends JPanel
     public final int TILE_SIZE = 80;
     public final int COLUMN_TILES = 9;
     public final int ROW_TILES = 9;
-    public static String UserName = "Anonymous";
-    public static JTextField TF_Message = new JTextField(20);
-    private static A_Chat_Client ChatClient;
-    public static JTextArea TA_CONVERSATION = new JTextArea();
-    public static JList JL_ONLINE = new JList();
     
     //temporary
     public final int[] MAP_SIZE = {12, 16};
@@ -77,11 +73,7 @@ public class Game extends JPanel
             System.out.println("oc");
         }
                 
-<<<<<<< HEAD
-        client = new Client(this, "localhost", 9000);
-=======
         client = new Client(this, "192.168.43.141", 9000);
->>>>>>> 99f6f4f40b67eb3f3263e6fe681ca093060dc747
         client.start();
         
         System.out.println("Connectadation");
@@ -532,8 +524,6 @@ public class Game extends JPanel
 
         cursor.paint(g2d);
     }
-
-    
     private void gameOver()
     {
         JOptionPane.showMessageDialog(this, "Game Over", "Game Over", JOptionPane.YES_NO_OPTION);
@@ -547,6 +537,8 @@ public class Game extends JPanel
         final Game game = new Game(index,players);
         frame.setPreferredSize(new Dimension(1330, 760));
         frame.pack();
+        ClienteChat chat = new ClienteChat(frame);
+        chat.recibirMensajesServidor();
         frame.add(game);
         game.setLocation(0, 0);
         frame.setVisible(true);
