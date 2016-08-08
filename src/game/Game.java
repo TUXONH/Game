@@ -73,7 +73,7 @@ public class Game extends JPanel
             System.out.println("oc");
         }
                 
-        client = new Client(this, "192.168.43.141", 9000);
+        client = new Client(this, "localhost", 9000);
         client.start();
         
         System.out.println("Connectadation");
@@ -535,9 +535,10 @@ public class Game extends JPanel
         JFrame frame = new JFrame("Advance Wars Remake");
       
         final Game game = new Game(index,players);
+        game.setLayout(null);
         frame.setPreferredSize(new Dimension(1330, 760));
         frame.pack();
-        ClienteChat chat = new ClienteChat(frame);
+        ClienteChat chat = new ClienteChat(game);
         chat.recibirMensajesServidor();
         frame.add(game);
         game.setLocation(0, 0);

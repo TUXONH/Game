@@ -3,11 +3,7 @@ package multiplayer;
 
 import java.util.Observable;
 
-/**
- * Objeto observable del patron observer.
- * 
- * @author Ivan Salas Corrales <http://programando-o-intentandolo.blogspot.com.es/>
- */
+
 public class MensajesChat extends Observable{
 
     private String mensaje;

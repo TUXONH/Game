@@ -21,7 +21,7 @@ public class ServidorChat {
         
         // Carga el archivo de configuracion de log4J
         
-        int puerto = 1234;
+        int puerto = 8000;
         int maximoConexiones = 10; // Maximo de conexiones simultaneas
         ServerSocket servidor = null; 
         Socket socket = null;

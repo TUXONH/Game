@@ -10,14 +10,9 @@ import java.util.Observer;
 import org.apache.log4j.Logger;
 
 
-/**
- * Esta clase gestiona el envio de datos entre el servidor y el cliente al que atiende.
- * 
- * @author Ivan Salas Corrales <http://programando-o-intentandolo.blogspot.com.es/>
- */
+
 public class ConexionCliente extends Thread implements Observer{
     
-    private Logger log = Logger.getLogger(ConexionCliente.class);
     private Socket socket; 
     private MensajesChat mensajes;
     private DataInputStream entradaDatos;
@@ -31,7 +26,7 @@ public class ConexionCliente extends Thread implements Observer{
             entradaDatos = new DataInputStream(socket.getInputStream());
             salidaDatos = new DataOutputStream(socket.getOutputStream());
         } catch (IOException ex) {
-            log.error("Error al crear los stream de entrada y salida : " + ex.getMessage());
+            System.out.println("Error al crear los stream de entrada y salida : " + ex.getMessage());
         }
     }
     
@@ -50,14 +45,14 @@ public class ConexionCliente extends Thread implements Observer{
                 // a sus observadores que hay un nuevo mensaje.
                 mensajes.setMensaje(mensajeRecibido);
             } catch (IOException ex) {
-                log.info("Cliente con la IP " + socket.getInetAddress().getHostName() + " desconectado.");
+                System.out.println("Cliente con la IP " + socket.getInetAddress().getHostName() + " desconectado.");
                 conectado = false; 
                 // Si se ha producido un error al recibir datos del cliente se cierra la conexion con el.
                 try {
                     entradaDatos.close();
                     salidaDatos.close();
                 } catch (IOException ex2) {
-                    log.error("Error al cerrar los stream de entrada y salida :" + ex2.getMessage());
+                    System.out.println("Error al cerrar los stream de entrada y salida :" + ex2.getMessage());
                 }
             }
         }   
@@ -69,7 +64,7 @@ public class ConexionCliente extends Thread implements Observer{
             // Envia el mensaje al cliente
             salidaDatos.writeUTF(arg.toString());
         } catch (IOException ex) {
-            log.error("Error al enviar mensaje al cliente (" + ex.getMessage() + ").");
+            System.out.println("Error al enviar mensaje al cliente (" + ex.getMessage() + ").");
         }
     }
 }

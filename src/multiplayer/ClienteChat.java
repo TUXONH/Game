@@ -10,12 +10,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.*;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
-public class ClienteChat extends JFrame {
-    
-    private Logger log = Logger.getLogger(ClienteChat.class);
+public class ClienteChat{
     private JTextArea mensajesChat;
     private Socket socket;
     
@@ -24,7 +20,6 @@ public class ClienteChat extends JFrame {
     private String usuario = "tuxon";
     
     public ClienteChat(Container c){
-        super("Cliente Chat");
         
         // Elementos de la ventana
         mensajesChat = new JTextArea();
@@ -37,41 +32,24 @@ public class ClienteChat extends JFrame {
         
         
         // Colocacion de los componentes en la ventana
-        c = this.getContentPane();
-        c.setLayout(new GridBagLayout());
+        //
+        mensajesChat.setSize(540, 300);
+        mensajesChat.setLocation(740, 320);
         
-        GridBagConstraints gbc = new GridBagConstraints();
+        c.add(mensajesChat);
+        //Cambiar para que sea scrollMensajesChat y no mensajesChats
         
-        gbc.insets = new Insets(20, 20, 20, 20);
         
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        c.add(scrollMensajesChat, gbc);
-        // Restaura valores por defecto
-        gbc.gridwidth = 1;        
-        gbc.weighty = 0;
+        tfMensaje.setSize(420, 24);
+        tfMensaje.setLocation(740, 640);
         
-        gbc.fill = GridBagConstraints.HORIZONTAL;        
-        gbc.insets = new Insets(0, 20, 20, 20);
+        c.add(tfMensaje);
         
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        c.add(tfMensaje, gbc);
-        // Restaura valores por defecto
-        gbc.weightx = 0;
+        btEnviar.setSize(100, 24);
+        btEnviar.setLocation(1180, 640);
         
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        c.add(btEnviar, gbc);
-        
-        this.setBounds(400, 100, 400, 500);
-        this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
-        
+        c.add(btEnviar);
+
         
         System.out.println("Quieres conectarte a " + host + " en el puerto " + puerto + " con el nombre de ususario: " + usuario + ".");
         
@@ -79,13 +57,14 @@ public class ClienteChat extends JFrame {
         try {
             socket = new Socket(host, puerto);
         } catch (UnknownHostException ex) {
-            log.error("No se ha podido conectar con el servidor (" + ex.getMessage() + ").");
+            System.out.println("No se ha podido conectar con el servidor (" + ex.getMessage() + ").");
         } catch (IOException ex) {
-            log.error("No se ha podido conectar con el servidor (" + ex.getMessage() + ").");
+            System.out.println("No se ha podido conectar con el servidor (" + ex.getMessage() + ").");
         }
         
         // Accion para el boton enviar
         btEnviar.addActionListener(new ConexionServidor(socket, tfMensaje, usuario));
+        System.out.println("termino");
         
     }
     
@@ -94,38 +73,47 @@ public class ClienteChat extends JFrame {
      */
     public void recibirMensajesServidor(){
         // Obtiene el flujo de entrada del socket
-        DataInputStream entradaDatos = null;
-        String mensaje;
-        try {
-            entradaDatos = new DataInputStream(socket.getInputStream());
-        } catch (IOException ex) {
-            log.error("Error al crear el stream de entrada: " + ex.getMessage());
-        } catch (NullPointerException ex) {
-            log.error("El socket no se creo correctamente. ");
-        }
+        Thread thread = new Thread() 
+        {
+            @Override
+            public void run() 
+            {
+                String mensaje;        
+                boolean conectado = true;
         
-        // Bucle infinito que recibe mensajes del servidor
-        boolean conectado = true;
-        while (conectado) {
-            try {
-                mensaje = entradaDatos.readUTF();
-                mensajesChat.append(mensaje + System.lineSeparator());
-            } catch (IOException ex) {
-                log.error("Error al leer del stream de entrada: " + ex.getMessage());
-                conectado = false;
-            } catch (NullPointerException ex) {
-                log.error("El socket no se creo correctamente. ");
-                conectado = false;
+                DataInputStream entradaDatos = null;
+                try {
+                    entradaDatos = new DataInputStream(socket.getInputStream());
+                    System.out.println("entro");
+                } catch (IOException ex) {
+                    System.out.println("Error al crear el stream de entrada: " + ex.getMessage());
+                } catch (NullPointerException ex) {
+                    System.out.println("El socket no se creo correctamente. ");
+                }
+                while(conectado)
+                {
+                    try {
+                        mensaje = entradaDatos.readUTF();
+                        mensajesChat.append(mensaje + System.lineSeparator());
+                        System.out.println("entro bucle");
+                    } catch (IOException ex) {
+                        System.out.println("Error al leer del stream de entrada: " + ex.getMessage());
+                        conectado = false;
+                    } catch (NullPointerException ex) {
+                        System.out.println("El socket no se creo correctamente. ");
+                        conectado = false;
+                    }
+                }
             }
-        }
+        };
+        thread.start();
     }
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Carga el archivo de configuracion de log4J
-        PropertyConfigurator.configure("log4j.properties");        
+        // Carga el archivo de configuracion de log4J     
     }
 
 }
